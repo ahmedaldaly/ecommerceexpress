@@ -1,59 +1,32 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi);
 
-const orderSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+
+const OrderSchema = new mongoose.Schema({
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        required: true,
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
     },
     product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-        required: true
+        required: true,
+        type: mongoose.Types.ObjectId,
+        ref: 'Product'
     },
     quantity: {
-        type: Number,
-        required: true,
-        min: 1,
+        type:Number,
         default:1,
     },
     address: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 5
+        type:String,
+        default:'No titles added.',
     },
-    status: {
+    stuts:{
         type: String,
-        enum: ['pending', 'shipped', 'delivered'],
-        default: 'pending'
+        enum: ['pending', 'shipped', 'delivered', 'canceled'], // القيم المسموح بها فقط
+        default: 'pending' // قيمة افتراضية
     }
 }, { timestamps: true });
 
-const Order = mongoose.model('Order', orderSchema);
+const Order = mongoose.model('Order', OrderSchema);
 
-function validateOrder(obj) {
-    const schema = Joi.object({
-        user: Joi.objectId().required(),
-        product: Joi.objectId().required(),
-        quantity: Joi.number().required(),
-        address: Joi.string().required().trim().min(5),
-        status: Joi.string().valid('pending', 'shipped', 'delivered').default('pending')
-    });
-    return schema.validate(obj);
-}
-function validateOrderUpdate(obj) {
-    const schema = Joi.object({
-        status: Joi.string().valid('pending', 'shipped', 'delivered').default('pending')
-    });
-
-    return schema.validate(obj);
-}
-
-module.exports = {
-    Order,
-    validateOrder,
-    validateOrderUpdate,
-};
+module.exports = { Order };

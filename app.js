@@ -15,7 +15,7 @@ app.set ('views', 'views');
 
 app.use(cors());
 // Routes
-app.use ('/api/vi/oddorder', require('./Routes/order'))
+app.use('/api/vi/order' , require('./Routes/order'))
 app.use ('/api/vi/auth', require('./Routes/auth'))
 app.use ('/api/vi/users', require('./Routes/user'))
 app.use ('/api/vi/product', require('./Routes/product'))
